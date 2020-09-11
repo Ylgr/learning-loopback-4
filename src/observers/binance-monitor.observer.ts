@@ -26,6 +26,7 @@ export class BinanceMonitorObserver implements LifeCycleObserver {
    */
   async start(): Promise<void> {
     // Add your logic for start
+    let account: any = this.accountRepo.loadAccount()
     console.log('This is a migrated asynchronous boot script');
 
     // const sample = {title: 'a todo sample', desc: 'Something to do.'};
@@ -34,9 +35,10 @@ export class BinanceMonitorObserver implements LifeCycleObserver {
     console.log('Sample created as ', result);
     const wss = new WebSocket('wss://fstream.binance.com/ws/!bookTicker')
 
-      wss.onmessage = async (event: any) => {
+      wss.onmessage = async (event: object) => {
+        account = this.accountRepo.getAccount()
         const data = JSON.parse(event.data)
-        console.log('data: ', data)
+        console.log('data: ', account)
       }
   }
 
